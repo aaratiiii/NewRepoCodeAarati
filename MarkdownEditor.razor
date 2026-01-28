@@ -1,0 +1,13 @@
+﻿<div style="display:flex; gap:12px; flex-wrap:wrap;">
+    <div style="flex:1; min-width:320px;">
+        <label><b>Markdown Content</b> (type Markdown here)</label>
+        <textarea class="form-control" style="min-height:300px; font-family:monospace;"
+                  @bind="Value"></textarea>
+        <small>This editor stores Markdown text. (Preview disabled to avoid extra installs.)</small>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Value { get; set; } = "";
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+}

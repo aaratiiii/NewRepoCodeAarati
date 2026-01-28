@@ -1,0 +1,10 @@
+﻿@namespace Aarati_s_Journal.Components.Layout
+@inject NavigationManager Nav
+
+<nav class="bottomnav" aria-label="Primary navigation">
+    <button class="tabbtn" @onclick='() => Nav.NavigateTo("/")'>🏠<span>Home</span></button>
+    <button class="tabbtn" @onclick='() => Nav.NavigateTo("/dashboard")'>📊<span>Dashboard</span></button>
+    <button class="tabbtn" @onclick='() => Nav.NavigateTo("/journal")'>📝<span>Journal</span></button>
+    <button class="tabbtn" @onclick='() => Nav.NavigateTo("/calendar")'>📅<span>Calendar</span></button>
+    <button class="tabbtn" @onclick='() => Nav.NavigateTo("/settings")'>⚙️<span>Settings</span></button>
+</nav>

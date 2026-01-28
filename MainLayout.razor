@@ -1,0 +1,31 @@
+﻿@namespace Aarati_s_Journal.Components.Layout
+@inherits LayoutComponentBase
+@inject NavigationManager Nav
+
+<div class="shell">
+    <header class="topbar">
+        <div class="brand">
+            <div class="title">Aarati’s Journal</div>
+            <div class="subtitle">Daily notes • mood • streaks</div>
+        </div>
+
+        <div class="actions">
+            <button class="btn ghost" @onclick="GoHome" title="Home">🏠</button>
+            <button class="btn ghost" @onclick="GoToLock" title="Lock / Unlock">🔒</button>
+        </div>
+    </header>
+
+    <main class="page">
+        @Body
+    </main>
+
+    <NavMenu />
+
+    <!-- spacing so content doesn’t hide behind bottom nav -->
+    <div class="bottom-spacer"></div>
+</div>
+
+@code {
+    void GoHome() => Nav.NavigateTo("/");
+    void GoToLock() => Nav.NavigateTo("/unlock");
+}

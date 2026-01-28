@@ -1,0 +1,10 @@
+﻿@using Aarati_s_Journal.Interfaces
+@inject IThemeService Theme
+
+<CascadingValue Value="Theme.IsDark" Name="IsDarkTheme">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

@@ -1,0 +1,83 @@
+﻿@using System.Globalization
+
+<div style="max-width:820px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <button class="btn btn-secondary" @onclick="PrevMonth">◀</button>
+        <h5 style="margin:0;">@current.ToString("MMMM yyyy")</h5>
+        <button class="btn btn-secondary" @onclick="NextMonth">▶</button>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:6px;">
+        @foreach (var dayName in dayNames)
+        {
+            <div style="font-weight:bold; text-align:center; padding:6px 0;">@dayName</div>
+        }
+
+        @foreach (var cell in cells)
+        {
+            if (cell == null)
+            {
+                <div style="height:80px; border:1px solid #eee; border-radius:10px;"></div>
+            }
+            else
+            {
+                var d = cell.Value;
+                var isToday = d.Date == DateTime.Today;
+
+                <button style="
+                        height:80px;
+                        border:1px solid #ddd;
+                        border-radius:10px;
+                        background:@(isToday ? "#d9edf7" : "white");
+                        cursor:pointer;
+                        text-align:left;
+                        padding:8px;"
+                        @onclick="() => OnPickDate.InvokeAsync(d)">
+                    <div style="font-weight:bold;">@d.Day</div>
+                    <div style="opacity:.7; font-size:12px;">@d.ToString("ddd")</div>
+                </button>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public EventCallback<DateTime> OnPickDate { get; set; }
+
+    private DateTime current = new(DateTime.Today.Year, DateTime.Today.Month, 1);
+    private string[] dayNames = Array.Empty<string>();
+    private List<DateTime?> cells = new();
+
+    protected override void OnInitialized()
+    {
+        dayNames = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames;
+        Build();
+    }
+
+    private void PrevMonth()
+    {
+        current = current.AddMonths(-1);
+        Build();
+    }
+
+    private void NextMonth()
+    {
+        current = current.AddMonths(1);
+        Build();
+    }
+
+    private void Build()
+    {
+        cells.Clear();
+        var first = new DateTime(current.Year, current.Month, 1);
+        var days = DateTime.DaysInMonth(current.Year, current.Month);
+
+        int offset = (int)first.DayOfWeek; // Sunday = 0
+        for (int i = 0; i < offset; i++) cells.Add(null);
+
+        for (int d = 1; d <= days; d++)
+            cells.Add(new DateTime(current.Year, current.Month, d));
+
+        while (cells.Count % 7 != 0) cells.Add(null);
+    }
+}

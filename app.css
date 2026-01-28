@@ -1,0 +1,22 @@
+﻿.tabbtn {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    border-radius: 16px;
+    padding: 10px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+    .tabbtn span {
+        font-size: 12px;
+    }
+
+    .tabbtn:active {
+        transform: scale(0.98);
+    }

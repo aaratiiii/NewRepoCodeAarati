@@ -1,0 +1,49 @@
+﻿@using Aarati_s_Journal.Data
+
+@if (Items == null || Items.Count == 0)
+{
+    <p>No items.</p>
+}
+else
+{
+    <div style="display:flex; flex-direction:column; gap:10px;">
+        @foreach (var e in Items)
+        {
+            var primary = e.EntryMoods.FirstOrDefault(x => x.IsPrimary)?.Mood?.Name ?? "—";
+            var tags = e.EntryTags.Select(x => x.Tag.Name).ToList();
+
+            <div class="card" style="padding:12px; border-radius:12px;">
+                <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+                    <div>
+                        <div style="font-weight:bold;">@e.EntryDate.ToString("dd MMM yyyy")</div>
+                        <div style="font-size:18px; font-weight:bold;">@(!string.IsNullOrWhiteSpace(e.Title) ? e.Title : "(No title)")</div>
+                        <div style="opacity:.8;">
+                            Category: <b>@(string.IsNullOrWhiteSpace(e.Category) ? "General" : e.Category)</b> |
+                            Primary Mood: <b>@primary</b>
+                        </div>
+                        @if (tags.Count > 0)
+                        {
+                            <div style="margin-top:6px; display:flex; flex-wrap:wrap; gap:6px;">
+                                @foreach (var t in tags.Take(8))
+                                {
+                                    <span style="padding:2px 8px; border:1px solid #ccc; border-radius:999px; font-size:12px;">
+                                        @t
+                                    </span>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <div style="align-self:center;">
+                        <button class="btn btn-outline-primary" @onclick="() => OnOpen.InvokeAsync(e.EntryDate)">Open</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public List<JournalEntry> Items { get; set; } = new();
+    [Parameter] public EventCallback<DateTime> OnOpen { get; set; }
+}
